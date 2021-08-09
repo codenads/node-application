@@ -14,6 +14,7 @@ import Page from "../../../components/page";
 import checkCPFValidity from "../../../utils/checkCPFValidity";
 
 import techsOptions from "./techs.json";
+import api from "../../../services/api";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -52,7 +53,7 @@ const Register = () => {
 
   const handleAddTech = (addedTechs: string[]) => {
     if (addedTechs.length > 3) {
-      console.log("nnnn");
+      alert("You can only add 3 techs");
     } else {
       setTechs(addedTechs);
     }
@@ -64,6 +65,7 @@ const Register = () => {
 
   const validateEmail = () => {
     const emailValidationRegex = new RegExp(
+      // eslint-disable-next-line
       /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
     );
     const isEmailValid = emailValidationRegex.test(email);
@@ -112,10 +114,17 @@ const Register = () => {
       // não solicita explicitamente a validação de telefone,
       // a mesma não está sendo feita.
       if (isCPFValid && isEmailValid && isTechsValid) {
-        console.log("send data to backend");
+        const response = await api.post("/registros", {
+          name,
+          email,
+          CPF,
+          phone,
+          techs,
+        });
+        console.log(response);
       }
     } catch (err) {
-      console.log("error");
+      console.log(err);
     }
   };
 
@@ -214,9 +223,13 @@ const Register = () => {
                     // Material-UI value está com tipo String[] em vez de string[],
                     // map com coerção do tipo para mitigar o problema
                     if (reason === "select-option") {
-                      handleAddTech(value.map((value) => String(value)));
+                      handleAddTech(
+                        value.map((value: String) => String(value))
+                      );
                     } else if (reason === "remove-option") {
-                      handleRemoveTech(value.map((value) => String(value)));
+                      handleRemoveTech(
+                        value.map((value: String) => String(value))
+                      );
                     }
                   }}
                   renderInput={(params) => (
