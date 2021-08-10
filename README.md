@@ -33,6 +33,4 @@ E então rodar as migrations do typeorm, caso necessário alterar as credenciais
 
 - `npm typeorm migration:run` ou `yarn typeorm migration:run`
 
-postgres
-sudo -u postgres psql
-create database mangarosa;
+Finalmente rode a aplicação com `npm run dev` ou `yarn dev`

@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { Grid, Box, TextField } from "@material-ui/core";
+import {
+  Grid,
+  Box,
+  TextField,
+  Paper,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
 import { SearchRounded } from "@material-ui/icons";
 
 import Collaborator, { ICollaborator } from "../../../components/collaborator";
@@ -11,6 +18,7 @@ const RegisterList = () => {
   const [displayedCollaborators, setDisplayedCollaborators] =
     useState<ICollaborator[]>(collaborators);
   const [collaboratorsFilter, setCollaboratorsFilter] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => setDisplayedCollaborators(collaborators), [collaborators]);
 
@@ -19,6 +27,7 @@ const RegisterList = () => {
       try {
         const { data } = await api.get("/collaborator");
         setCollaborators(data.collaborators);
+        setLoading(false);
       } catch (err) {
         console.log(err.response?.data.message);
       }
@@ -51,6 +60,36 @@ const RegisterList = () => {
     });
     setDisplayedCollaborators(newDisplayedCollaborators);
   }, [collaborators, collaboratorsFilter]);
+
+  if (loading) {
+    return (
+      <CircularProgress
+        style={{
+          position: "absolute",
+          top: "calc(50% - 20px)",
+          left: "calc(50% - 20px)",
+        }}
+      />
+    );
+  } else if (!collaborators.length) {
+    return (
+      <Paper
+        style={{
+          background: "#ff4444",
+          padding: "1rem 2rem",
+          width: "fit-content",
+          margin: "0 auto",
+        }}
+      >
+        <Typography
+          variant="h1"
+          style={{ fontSize: "1.5rem", fontWeight: 400, color: "#fff" }}
+        >
+          There's no collaborators to be displayed
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Box>
