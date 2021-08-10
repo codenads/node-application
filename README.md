@@ -31,7 +31,7 @@ Depois prosseguir com a instação dos pacotes necessários na aplicação
 
 E então rodar as migrations do typeorm, caso necessário alterar as credenciais e a porta do PSQL arquivo no caminho `backend/ormconfig.json`
 
-- `npm typeorm migration:run` ou `yarn typeorm migration:run`
+- `npm run typeorm migration:run` ou `yarn typeorm migration:run`
 
 Finalmente rode a aplicação com `npm run dev` ou `yarn dev`
 
