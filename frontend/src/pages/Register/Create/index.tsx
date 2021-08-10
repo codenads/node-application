@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { FormEvent, useState, ChangeEvent } from "react";
 import {
   Grid,
@@ -127,6 +128,9 @@ const Register = () => {
       console.log(err);
     }
   };
+=======
+import { Box, Typography } from "@material-ui/core";
+>>>>>>> feature/list
 
   return (
     <>
