@@ -8,17 +8,19 @@ export interface ICollaborator {
   email: string;
   cpf: string;
   phone?: string;
+  status?: boolean;
   techs: string[];
+}
+
+export interface ICollaboratorParams {
+  id: string;
 }
 
 interface CollaboratorProps extends ICollaborator {}
 
-const Collaborator: FC<CollaboratorProps> = ({ id, name, cpf }) => {
+const Collaborator: FC<CollaboratorProps> = ({ id, name, cpf, status }) => {
   return (
-    <Paper
-      variant="outlined"
-      style={{ padding: "1rem 2rem", maxWidth: "300px" }}
-    >
+    <Paper variant="outlined" style={{ padding: "1rem 2rem" }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="button" color="primary">
@@ -31,6 +33,18 @@ const Collaborator: FC<CollaboratorProps> = ({ id, name, cpf }) => {
             CPF
           </Typography>
           <Typography>{cpf}</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="button" color="primary">
+            Status
+          </Typography>
+          <Typography>
+            {typeof status !== undefined
+              ? status
+                ? "Validado"
+                : "Não Validado"
+              : "Não avaliado"}
+          </Typography>
         </Grid>
       </Grid>
       <Box mt={4}>

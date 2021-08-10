@@ -11,7 +11,7 @@ const Router = () => {
         <Route exact path="/" component={Home} />
         <Route path="/registros" component={ListRegister} />
         <Route path="/:id/registrar" component={CreateRegister} />
-        <Route path="/:id/validate" component={Validate} />
+        <Route path="/:id/validar" component={Validate} />
       </Switch>
     </BrowserRouter>
   );

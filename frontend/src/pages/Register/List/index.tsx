@@ -4,7 +4,7 @@ import { SearchRounded } from "@material-ui/icons";
 
 import Collaborator, { ICollaborator } from "../../../components/collaborator";
 
-// import api from "../../../services/api";
+import api from "../../../services/api";
 
 const RegisterList = () => {
   const [collaborators, setCollaborators] = useState<ICollaborator[]>([]);
@@ -16,41 +16,12 @@ const RegisterList = () => {
 
   useEffect(() => {
     const fetchCollaborators = async () => {
-      // const { data } = await api.get("/registros");
-      setCollaborators([
-        {
-          id: "someid",
-          name: "Luís",
-          email: "someemail@gmail.com",
-          cpf: "123.123.123-06",
-          phone: "82999999999",
-          techs: ["some", "tech", "here"],
-        },
-        {
-          id: "someid",
-          name: "Luís",
-          email: "someemail@gmail.com",
-          cpf: "123.123.123-06",
-          phone: "82999999999",
-          techs: ["some", "tech", "here"],
-        },
-        {
-          id: "someid",
-          name: "Luís",
-          email: "someemail@gmail.com",
-          cpf: "123.123.123-06",
-          phone: "82999999999",
-          techs: ["some", "tech", "here"],
-        },
-        {
-          id: "someid",
-          name: "Luís",
-          email: "someemail@gmail.com",
-          cpf: "123.123.123-06",
-          phone: "82999999999",
-          techs: ["humoungous", "tech", "here"],
-        },
-      ]);
+      try {
+        const { data } = await api.get("/collaborator");
+        setCollaborators(data.collaborators);
+      } catch (err) {
+        console.log(err.response.data.message);
+      }
     };
     fetchCollaborators();
   }, []);
@@ -79,7 +50,7 @@ const RegisterList = () => {
       );
     });
     setDisplayedCollaborators(newDisplayedCollaborators);
-  }, [collaboratorsFilter]);
+  }, [collaborators, collaboratorsFilter]);
 
   return (
     <Box>
@@ -101,7 +72,7 @@ const RegisterList = () => {
       />
       <Grid container spacing={2}>
         {displayedCollaborators.map((collaborator) => (
-          <Grid item key={collaborator.cpf}>
+          <Grid item key={collaborator.cpf} xs={12} sm={4}>
             <Collaborator {...collaborator} />
           </Grid>
         ))}

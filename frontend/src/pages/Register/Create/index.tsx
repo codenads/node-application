@@ -1,4 +1,5 @@
 import { FormEvent, useState, ChangeEvent } from "react";
+import { useParams } from "react-router";
 import {
   Grid,
   Paper,
@@ -11,10 +12,12 @@ import { Autocomplete } from "@material-ui/lab";
 
 import Header from "../../../components/header";
 import Page from "../../../components/page";
+import { ICollaboratorParams } from "../../../components/collaborator";
+
 import checkCPFValidity from "../../../utils/checkCPFValidity";
+import api from "../../../services/api";
 
 import techsOptions from "./techs.json";
-import api from "../../../services/api";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -32,6 +35,8 @@ const Register = () => {
   const [techs, setTechs] = useState<String[]>([]);
   const [techsError, setTechsError] = useState(false);
   const [techsHelperText, setTechsHelperText] = useState("");
+
+  const { id } = useParams<ICollaboratorParams>();
 
   const handleChangeCPF = (event: ChangeEvent<HTMLInputElement>) => {
     const parsedCPF = event.target.value.replace(/[^\d]/g, "");
@@ -114,17 +119,17 @@ const Register = () => {
       // não solicita explicitamente a validação de telefone,
       // a mesma não está sendo feita.
       if (isCPFValid && isEmailValid && isTechsValid) {
-        const response = await api.post("/registros", {
+        const response = await api.post(`/collaborator/${id}/`, {
           name,
           email,
-          CPF,
+          cpf: CPF,
           phone,
           techs,
         });
         console.log(response);
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data.message);
     }
   };
 
