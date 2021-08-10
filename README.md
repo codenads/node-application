@@ -34,3 +34,5 @@ E então rodar as migrations do typeorm, caso necessário alterar as credenciais
 - `npm typeorm migration:run` ou `yarn typeorm migration:run`
 
 Finalmente rode a aplicação com `npm run dev` ou `yarn dev`
+
+A Aplicação será lançada na porta 5000
