@@ -4,11 +4,8 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.3",
-<<<<<<< HEAD
-    "@material-ui/lab": "^4.0.0-alpha.60",
-=======
     "@material-ui/icons": "^4.11.2",
->>>>>>> feature/list
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -49,10 +46,7 @@
     ]
   },
   "devDependencies": {
-<<<<<<< HEAD
-=======
     "@types/axios": "^0.14.0",
->>>>>>> feature/list
     "@types/react-router-dom": "^5.1.8"
   }
 }
