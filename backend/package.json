@@ -5,15 +5,20 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pg": "^8.7.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.36"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "ts-node": "^10.2.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "dev": "NODE_ENV=development ts-node-dev --respawn --transpile-only --clear --no-notify src/index.ts"
+    "dev": "NODE_ENV=development ts-node-dev --respawn --transpile-only --clear --no-notify src/index.ts",
+    "typeorm": "yarn ts-node ./node_modules/typeorm/cli.js"
   }
 }

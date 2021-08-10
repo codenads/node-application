@@ -1,14 +1,12 @@
 import { Router } from "express";
 
-import CollaboratorController from "../controllers/collaboratorController";
+import CollaboratorController from "../controllers/CollaboratorController";
 
 const router = Router();
 
-const collaboratorController = new CollaboratorController();
-
-router.get("/", collaboratorController.index);
-router.get("/:id", collaboratorController.show);
-router.post("/:id", collaboratorController.create);
-router.put("/:id", collaboratorController.update);
+router.get("/", CollaboratorController.index);
+router.get("/:id", CollaboratorController.show);
+router.post("/:id", CollaboratorController.create);
+router.put("/:id", CollaboratorController.update);
 
 export default router;
