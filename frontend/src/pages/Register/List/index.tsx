@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Grid, Box, TextField, Typography } from "@material-ui/core";
+import { Grid, Box, TextField } from "@material-ui/core";
 import { SearchRounded } from "@material-ui/icons";
 
 import Collaborator, { ICollaborator } from "../../../components/collaborator";
@@ -20,7 +20,7 @@ const RegisterList = () => {
         const { data } = await api.get("/collaborator");
         setCollaborators(data.collaborators);
       } catch (err) {
-        console.log(err.response.data.message);
+        console.log(err.response?.data.message);
       }
     };
     fetchCollaborators();
@@ -54,11 +54,7 @@ const RegisterList = () => {
 
   return (
     <Box>
-      <Typography variant="h2" style={{ color: "#fff" }}>
-        List
-      </Typography>
       <TextField
-        variant="outlined"
         size="small"
         label="Filter"
         value={collaboratorsFilter}
@@ -69,6 +65,7 @@ const RegisterList = () => {
         InputLabelProps={{
           shrink: true,
         }}
+        style={{ marginBottom: "1rem" }}
       />
       <Grid container spacing={2}>
         {displayedCollaborators.map((collaborator) => (

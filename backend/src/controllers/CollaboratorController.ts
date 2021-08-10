@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import Collaborator from "../database/models/Collaborator";
+import checkCPFValidity from "../utils/checkCPFValidatity";
+import checkEmailValidity from "../utils/checkEmailValidity";
 
 class CollaboratorController {
   async index(req: Request, res: Response) {
@@ -43,22 +45,19 @@ class CollaboratorController {
       return res.status(500).json({ error: "Internal server error." });
     }
 
-    // if (![name, email, cpf].every((item) => typeof item === "string")) {
-    //   return res.status(400).json({ message: "Fields types incorrect" });
-    // }
+    const isCPFValid = checkCPFValidity(
+      String(cpf).replace(/\./g, "").replace(/-/g, "")
+    );
 
-    // if (!Array.isArray(techs)) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Technologies type is not an Array." });
-    // }
+    if (!isCPFValid) {
+      return res.status(400).json({ message: "Invalid CPF" });
+    }
 
-    // if (!techs.every((tech) => typeof tech === "string")) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Technologies item type is not string." });
-    // }
+    const isEmailValid = checkEmailValidity(email);
 
+    if (!isEmailValid) {
+      return res.status(400).json({ message: "Invalid Email" });
+    }
     const collaboratorData = {
       id,
       name,

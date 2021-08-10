@@ -8,6 +8,8 @@ import {
   Grid,
   Chip as MuiChip,
   withStyles,
+  Divider,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   ICollaborator,
@@ -16,6 +18,7 @@ import {
 
 import api from "../../services/api";
 import { useParams } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const Chip = withStyles((theme) => ({
   root: {
@@ -37,6 +40,8 @@ const Validate = () => {
   const [collaborator, setCollaborator] = useState<ICollaborator>();
   const [loading, setLoading] = useState(true);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const { id } = useParams<ICollaboratorParams>();
 
   useEffect(() => {
@@ -46,7 +51,8 @@ const Validate = () => {
         setCollaborator(data.collaborator);
         setLoading(false);
       } catch (err) {
-        console.log(err.response.data.message);
+        console.log(err);
+        // console.log(err.response.data.message);
       }
     };
     fetchCollaborator();
@@ -54,33 +60,54 @@ const Validate = () => {
 
   const handleValidate = async (validate: boolean) => {
     try {
-      const { data } = await api.put(`/collaborator/${id}/`, { validate });
-      console.log(data);
+      await api.put(`/collaborator/${id}/`, { validate });
+      enqueueSnackbar("Collaborator updated successfully.", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
     } catch (err) {
-      console.log(err.response.data.message);
+      enqueueSnackbar("Collaborator could not be updated successfully.", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
     }
   };
 
   if (loading) {
     return (
-      <div>
-        <h1>Loading</h1>
-      </div>
+      <CircularProgress
+        style={{
+          position: "absolute",
+          top: "calc(50% - 20px)",
+          left: "calc(50% - 20px)",
+        }}
+      />
     );
   }
 
   if (!collaborator) {
     return (
-      <div>
-        <h1>Collaborator does not exist</h1>
-      </div>
+      <Paper
+        style={{
+          background: "#ff4444",
+          padding: "1rem 2rem",
+          width: "fit-content",
+          margin: "0 auto",
+        }}
+      >
+        <Typography
+          variant="h1"
+          style={{ fontSize: "1.5rem", fontWeight: 400, color: "#fff" }}
+        >
+          Collaborator could not be found
+        </Typography>
+      </Paper>
     );
   }
 
   return (
     <Paper
-      variant="outlined"
-      style={{ padding: "1rem 2rem", maxWidth: "300px" }}
+      style={{ padding: "1rem 2rem 2rem", maxWidth: 500, margin: "0 auto" }}
     >
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -111,7 +138,7 @@ const Validate = () => {
           <Typography variant="button" color="primary">
             Technologies
           </Typography>
-          <Box>
+          <Box mt={1}>
             {collaborator.techs.map((tech) => (
               <Chip
                 key={tech}
@@ -122,17 +149,35 @@ const Validate = () => {
             ))}
           </Box>
         </Grid>
+        <Grid item xs={12}>
+          <Typography variant="button" color="primary">
+            Status
+          </Typography>
+          <Typography>
+            {collaborator.status !== null
+              ? collaborator.status
+                ? "Validado"
+                : "Não Validado"
+              : "Não avaliado"}
+          </Typography>
+        </Grid>
+        {collaborator.validatedAt && (
+          <Grid item xs={12}>
+            <Typography variant="button" color="primary">
+              Validated at
+            </Typography>
+            <Typography>
+              {new Date(collaborator.validatedAt).toLocaleString()}
+            </Typography>
+          </Grid>
+        )}
       </Grid>
-      <Box
-        mt={2}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-      >
+      <Divider style={{ margin: "1rem 0" }} />
+      <Box display="flex" alignItems="center" justifyContent="space-between">
         <Button
           variant="contained"
-          color="secondary"
           onClick={() => handleValidate(false)}
+          style={{ background: "#ff4444", color: "#fff" }}
         >
           Não validar
         </Button>
@@ -140,6 +185,7 @@ const Validate = () => {
           variant="contained"
           color="primary"
           onClick={() => handleValidate(true)}
+          style={{ background: "#00C851" }}
         >
           Validar
         </Button>

@@ -9,6 +9,7 @@ export interface ICollaborator {
   cpf: string;
   phone?: string;
   status?: boolean;
+  validatedAt?: Date;
   techs: string[];
 }
 
@@ -20,8 +21,8 @@ interface CollaboratorProps extends ICollaborator {}
 
 const Collaborator: FC<CollaboratorProps> = ({ id, name, cpf, status }) => {
   return (
-    <Paper variant="outlined" style={{ padding: "1rem 2rem" }}>
-      <Grid container spacing={2}>
+    <Paper style={{ padding: "1rem 2rem" }}>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <Typography variant="button" color="primary">
             Name
@@ -38,16 +39,18 @@ const Collaborator: FC<CollaboratorProps> = ({ id, name, cpf, status }) => {
           <Typography variant="button" color="primary">
             Status
           </Typography>
-          <Typography>
-            {typeof status !== undefined
-              ? status
-                ? "Validado"
-                : "Não Validado"
-              : "Não avaliado"}
-          </Typography>
+          <Box>
+            <Typography>
+              {status !== null
+                ? status
+                  ? "Validado"
+                  : "Não Validado"
+                : "Não avaliado"}
+            </Typography>
+          </Box>
         </Grid>
       </Grid>
-      <Box mt={4}>
+      <Box mt={2}>
         <Link to={`/${id}/validar`}>
           <Button variant="contained" color="primary">
             Details
